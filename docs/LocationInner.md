@@ -9,7 +9,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { LocationInner } from '@trata/ts-client-sdk';
+import { LocationInner } from '@trata/ts-volcani-sdk';
 
 const instance: LocationInner = {
 };

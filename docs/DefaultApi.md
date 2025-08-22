@@ -24,7 +24,7 @@ Serve favicon.ico to prevent 404 errors.
 import {
     DefaultApi,
     Configuration
-} from '@trata/ts-client-sdk';
+} from '@trata/ts-volcani-sdk';
 
 const configuration = new Configuration();
 const apiInstance = new DefaultApi(configuration);
@@ -68,7 +68,7 @@ Get all messages for a specific session.
 import {
     DefaultApi,
     Configuration
-} from '@trata/ts-client-sdk';
+} from '@trata/ts-volcani-sdk';
 
 const configuration = new Configuration();
 const apiInstance = new DefaultApi(configuration);
@@ -120,7 +120,7 @@ Get the current status of the agent.
 import {
     DefaultApi,
     Configuration
-} from '@trata/ts-client-sdk';
+} from '@trata/ts-volcani-sdk';
 
 const configuration = new Configuration();
 const apiInstance = new DefaultApi(configuration);
@@ -164,7 +164,7 @@ Get sessions for sidebar with names and message counts.
 import {
     DefaultApi,
     Configuration
-} from '@trata/ts-client-sdk';
+} from '@trata/ts-volcani-sdk';
 
 const configuration = new Configuration();
 const apiInstance = new DefaultApi(configuration);
@@ -219,7 +219,7 @@ Health check endpoint that doesn\'t require authentication.
 import {
     DefaultApi,
     Configuration
-} from '@trata/ts-client-sdk';
+} from '@trata/ts-volcani-sdk';
 
 const configuration = new Configuration();
 const apiInstance = new DefaultApi(configuration);
@@ -264,7 +264,7 @@ import {
     DefaultApi,
     Configuration,
     InvokeRequest
-} from '@trata/ts-client-sdk';
+} from '@trata/ts-volcani-sdk';
 
 const configuration = new Configuration();
 const apiInstance = new DefaultApi(configuration);
@@ -319,7 +319,7 @@ Health check endpoint for Cloud Run.
 import {
     DefaultApi,
     Configuration
-} from '@trata/ts-client-sdk';
+} from '@trata/ts-volcani-sdk';
 
 const configuration = new Configuration();
 const apiInstance = new DefaultApi(configuration);
@@ -363,7 +363,7 @@ Serve the main Volcani chat interface.
 import {
     DefaultApi,
     Configuration
-} from '@trata/ts-client-sdk';
+} from '@trata/ts-volcani-sdk';
 
 const configuration = new Configuration();
 const apiInstance = new DefaultApi(configuration);

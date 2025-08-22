@@ -13,7 +13,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { InvokeResponse } from '@trata/ts-client-sdk';
+import { InvokeResponse } from '@trata/ts-volcani-sdk';
 
 const instance: InvokeResponse = {
     session_id,

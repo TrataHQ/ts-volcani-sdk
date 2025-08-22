@@ -22,7 +22,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { ChatMessage } from '@trata/ts-client-sdk';
+import { ChatMessage } from '@trata/ts-volcani-sdk';
 
 const instance: ChatMessage = {
     message_id,

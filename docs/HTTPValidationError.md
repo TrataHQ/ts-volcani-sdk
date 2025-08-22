@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { HTTPValidationError } from '@trata/ts-client-sdk';
+import { HTTPValidationError } from '@trata/ts-volcani-sdk';
 
 const instance: HTTPValidationError = {
     detail,

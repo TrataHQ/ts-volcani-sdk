@@ -15,7 +15,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { SidebarSessionsResponse } from '@trata/ts-client-sdk';
+import { SidebarSessionsResponse } from '@trata/ts-volcani-sdk';
 
 const instance: SidebarSessionsResponse = {
     user_id,

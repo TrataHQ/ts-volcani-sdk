@@ -13,7 +13,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { InvokeRequest } from '@trata/ts-client-sdk';
+import { InvokeRequest } from '@trata/ts-volcani-sdk';
 
 const instance: InvokeRequest = {
     query,

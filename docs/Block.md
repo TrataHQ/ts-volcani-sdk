@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { Block } from '@trata/ts-client-sdk';
+import { Block } from '@trata/ts-volcani-sdk';
 
 const instance: Block = {
     type,

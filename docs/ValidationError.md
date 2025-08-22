@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { ValidationError } from '@trata/ts-client-sdk';
+import { ValidationError } from '@trata/ts-volcani-sdk';
 
 const instance: ValidationError = {
     loc,

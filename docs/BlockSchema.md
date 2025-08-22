@@ -14,7 +14,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { BlockSchema } from '@trata/ts-client-sdk';
+import { BlockSchema } from '@trata/ts-volcani-sdk';
 
 const instance: BlockSchema = {
     name,

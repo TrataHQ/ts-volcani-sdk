@@ -16,7 +16,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { SessionMessagesResponse } from '@trata/ts-client-sdk';
+import { SessionMessagesResponse } from '@trata/ts-volcani-sdk';
 
 const instance: SessionMessagesResponse = {
     session_id,
