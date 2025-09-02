@@ -51,28 +51,29 @@ All URIs are relative to *http://localhost*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-*DefaultApi* | [**getFaviconFaviconIcoGet**](docs/DefaultApi.md#getfaviconfaviconicoget) | **GET** /favicon.ico | Get Favicon
 *DefaultApi* | [**getSessionMessagesApiSessionsSessionIdMessagesGet**](docs/DefaultApi.md#getsessionmessagesapisessionssessionidmessagesget) | **GET** /api/sessions/{session_id}/messages | Get Session Messages
 *DefaultApi* | [**getStatusStatusGet**](docs/DefaultApi.md#getstatusstatusget) | **GET** /status | Get Status
 *DefaultApi* | [**getUserSessionsApiSessionsGet**](docs/DefaultApi.md#getusersessionsapisessionsget) | **GET** /api/sessions | Get User Sessions
 *DefaultApi* | [**healthCheckHealthGet**](docs/DefaultApi.md#healthcheckhealthget) | **GET** /health | Health Check
 *DefaultApi* | [**invokeAgentInvokePost**](docs/DefaultApi.md#invokeagentinvokepost) | **POST** /invoke | Invoke Agent
-*DefaultApi* | [**readRootGet**](docs/DefaultApi.md#readrootget) | **GET** / | Read Root
-*DefaultApi* | [**serveUiUiGet**](docs/DefaultApi.md#serveuiuiget) | **GET** /ui | Serve Ui
 
 
 ### Documentation For Models
 
+ - [Args](docs/Args.md)
  - [Block](docs/Block.md)
  - [BlockSchema](docs/BlockSchema.md)
  - [ChatMessage](docs/ChatMessage.md)
+ - [ChatMessagesResponse](docs/ChatMessagesResponse.md)
+ - [ChatSession](docs/ChatSession.md)
+ - [ChatSessionResponse](docs/ChatSessionResponse.md)
+ - [Content](docs/Content.md)
  - [HTTPValidationError](docs/HTTPValidationError.md)
  - [InvokeRequest](docs/InvokeRequest.md)
  - [InvokeResponse](docs/InvokeResponse.md)
  - [LocationInner](docs/LocationInner.md)
- - [SessionMessagesResponse](docs/SessionMessagesResponse.md)
- - [SidebarSession](docs/SidebarSession.md)
- - [SidebarSessionsResponse](docs/SidebarSessionsResponse.md)
+ - [ToolCallRequestContent](docs/ToolCallRequestContent.md)
+ - [ToolCallResponseContent](docs/ToolCallResponseContent.md)
  - [ValidationError](docs/ValidationError.md)
 
 

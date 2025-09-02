@@ -24,23 +24,42 @@ import type { RequestArgs } from './base';
 import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerMap } from './base';
 
 /**
+ * Arguments for the tool call
+ * @export
+ * @interface Args
+ */
+export interface Args {
+}
+/**
  * A block with type and content.
  * @export
  * @interface Block
  */
 export interface Block {
     /**
-     * Type of the block
+     * Unique identifier for the block
+     * @type {string}
+     * @memberof Block
+     */
+    'id': string;
+    /**
+     * Type of the block (markdown, component, tool_call_request, tool_call_response, etc.)
      * @type {string}
      * @memberof Block
      */
     'type': string;
     /**
-     * Content data for the block
-     * @type {any}
+     * 
+     * @type {Content}
      * @memberof Block
      */
-    'content': any;
+    'content': Content | null;
+    /**
+     * 
+     * @type {{ [key: string]: any; }}
+     * @memberof Block
+     */
+    'metadata'?: { [key: string]: any; } | null;
 }
 /**
  * Schema definition for a block type.
@@ -98,17 +117,11 @@ export interface ChatMessage {
      */
     'timestamp': string;
     /**
-     * Role: \'user\', \'assistant\', or \'tool_call\'
+     * Role: \'user\', \'assistant\', or \'system\'
      * @type {string}
      * @memberof ChatMessage
      */
     'role': string;
-    /**
-     * Message content
-     * @type {string}
-     * @memberof ChatMessage
-     */
-    'content': string;
     /**
      * 
      * @type {Array<Block>}
@@ -121,36 +134,178 @@ export interface ChatMessage {
      * @memberof ChatMessage
      */
     'metadata'?: { [key: string]: any; };
+}
+/**
+ * Response model for session messages.
+ * @export
+ * @interface ChatMessagesResponse
+ */
+export interface ChatMessagesResponse {
     /**
-     * 
+     * Session identifier
      * @type {string}
-     * @memberof ChatMessage
+     * @memberof ChatMessagesResponse
      */
-    'tool_name'?: string | null;
+    'session_id': string;
     /**
-     * 
-     * @type {{ [key: string]: any; }}
-     * @memberof ChatMessage
-     */
-    'tool_args'?: { [key: string]: any; } | null;
-    /**
-     * 
+     * User identifier
      * @type {string}
-     * @memberof ChatMessage
+     * @memberof ChatMessagesResponse
      */
-    'tool_result'?: string | null;
+    'user_id': string;
     /**
-     * 
+     * List of messages in the session
+     * @type {Array<ChatMessage>}
+     * @memberof ChatMessagesResponse
+     */
+    'messages': Array<ChatMessage>;
+    /**
+     * Total number of messages in the session
+     * @type {number}
+     * @memberof ChatMessagesResponse
+     */
+    'total_messages': number;
+    /**
+     * Always False - no pagination
      * @type {boolean}
-     * @memberof ChatMessage
+     * @memberof ChatMessagesResponse
      */
-    'tool_error'?: boolean | null;
+    'has_more': boolean;
+    /**
+     * Total message count only
+     * @type {{ [key: string]: any; }}
+     * @memberof ChatMessagesResponse
+     */
+    'pagination': { [key: string]: any; };
+}
+/**
+ * Session data for sidebar display.
+ * @export
+ * @interface ChatSession
+ */
+export interface ChatSession {
+    /**
+     * Session identifier
+     * @type {string}
+     * @memberof ChatSession
+     */
+    'session_id': string;
+    /**
+     * Session name (generated from first message)
+     * @type {string}
+     * @memberof ChatSession
+     */
+    'name': string;
+    /**
+     * User identifier
+     * @type {string}
+     * @memberof ChatSession
+     */
+    'user_id': string;
     /**
      * 
      * @type {string}
-     * @memberof ChatMessage
+     * @memberof ChatSession
      */
-    'type'?: string | null;
+    'created_at'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof ChatSession
+     */
+    'updated_at'?: string | null;
+    /**
+     * Number of messages in the session
+     * @type {number}
+     * @memberof ChatSession
+     */
+    'message_count': number;
+    /**
+     * Preview of the last message
+     * @type {string}
+     * @memberof ChatSession
+     */
+    'last_message_preview': string;
+}
+/**
+ * Response model for sidebar sessions.
+ * @export
+ * @interface ChatSessionResponse
+ */
+export interface ChatSessionResponse {
+    /**
+     * User identifier
+     * @type {string}
+     * @memberof ChatSessionResponse
+     */
+    'user_id': string;
+    /**
+     * List of sessions for sidebar
+     * @type {Array<ChatSession>}
+     * @memberof ChatSessionResponse
+     */
+    'sessions': Array<ChatSession>;
+    /**
+     * Total number of sessions available
+     * @type {number}
+     * @memberof ChatSessionResponse
+     */
+    'total_sessions': number;
+    /**
+     * Whether there are more sessions available
+     * @type {boolean}
+     * @memberof ChatSessionResponse
+     */
+    'has_more': boolean;
+    /**
+     * Pagination information
+     * @type {{ [key: string]: any; }}
+     * @memberof ChatSessionResponse
+     */
+    'pagination': { [key: string]: any; };
+}
+/**
+ * Content data for the block
+ * @export
+ * @interface Content
+ */
+export interface Content {
+    /**
+     * ID of the tool call
+     * @type {string}
+     * @memberof Content
+     */
+    'tool_call_id': string;
+    /**
+     * Name of the tool call
+     * @type {string}
+     * @memberof Content
+     */
+    'name': string;
+    /**
+     * 
+     * @type {Args}
+     * @memberof Content
+     */
+    'args'?: Args;
+    /**
+     * Result content of the tool call
+     * @type {string}
+     * @memberof Content
+     */
+    'result_content': string;
+    /**
+     * Whether the tool call failed
+     * @type {boolean}
+     * @memberof Content
+     */
+    'is_tool_call_error': boolean;
+    /**
+     * Time taken to call the tool
+     * @type {number}
+     * @memberof Content
+     */
+    'total_response_time': number;
 }
 /**
  * 
@@ -223,133 +378,66 @@ export interface InvokeResponse {
 export interface LocationInner {
 }
 /**
- * Response model for session messages.
+ * 
  * @export
- * @interface SessionMessagesResponse
+ * @interface ToolCallRequestContent
  */
-export interface SessionMessagesResponse {
+export interface ToolCallRequestContent {
     /**
-     * Session identifier
+     * ID of the tool call
      * @type {string}
-     * @memberof SessionMessagesResponse
+     * @memberof ToolCallRequestContent
      */
-    'session_id': string;
+    'tool_call_id': string;
     /**
-     * User identifier
+     * Name of the tool call
      * @type {string}
-     * @memberof SessionMessagesResponse
-     */
-    'user_id': string;
-    /**
-     * List of messages in the session
-     * @type {Array<ChatMessage>}
-     * @memberof SessionMessagesResponse
-     */
-    'messages': Array<ChatMessage>;
-    /**
-     * Total number of messages in the session
-     * @type {number}
-     * @memberof SessionMessagesResponse
-     */
-    'total_messages': number;
-    /**
-     * Always False - no pagination
-     * @type {boolean}
-     * @memberof SessionMessagesResponse
-     */
-    'has_more': boolean;
-    /**
-     * Total message count only
-     * @type {{ [key: string]: any; }}
-     * @memberof SessionMessagesResponse
-     */
-    'pagination': { [key: string]: any; };
-}
-/**
- * Session data for sidebar display.
- * @export
- * @interface SidebarSession
- */
-export interface SidebarSession {
-    /**
-     * Session identifier
-     * @type {string}
-     * @memberof SidebarSession
-     */
-    'session_id': string;
-    /**
-     * Session name (generated from first message)
-     * @type {string}
-     * @memberof SidebarSession
+     * @memberof ToolCallRequestContent
      */
     'name': string;
     /**
-     * User identifier
-     * @type {string}
-     * @memberof SidebarSession
-     */
-    'user_id': string;
-    /**
      * 
-     * @type {string}
-     * @memberof SidebarSession
+     * @type {Args}
+     * @memberof ToolCallRequestContent
      */
-    'created_at'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof SidebarSession
-     */
-    'updated_at'?: string | null;
-    /**
-     * Number of messages in the session
-     * @type {number}
-     * @memberof SidebarSession
-     */
-    'message_count': number;
-    /**
-     * Preview of the last message
-     * @type {string}
-     * @memberof SidebarSession
-     */
-    'last_message_preview': string;
+    'args'?: Args;
 }
 /**
- * Response model for sidebar sessions.
+ * 
  * @export
- * @interface SidebarSessionsResponse
+ * @interface ToolCallResponseContent
  */
-export interface SidebarSessionsResponse {
+export interface ToolCallResponseContent {
     /**
-     * User identifier
+     * ID of the tool call
      * @type {string}
-     * @memberof SidebarSessionsResponse
+     * @memberof ToolCallResponseContent
      */
-    'user_id': string;
+    'tool_call_id': string;
     /**
-     * List of sessions for sidebar
-     * @type {Array<SidebarSession>}
-     * @memberof SidebarSessionsResponse
+     * Name of the tool call
+     * @type {string}
+     * @memberof ToolCallResponseContent
      */
-    'sessions': Array<SidebarSession>;
+    'name': string;
     /**
-     * Total number of sessions available
-     * @type {number}
-     * @memberof SidebarSessionsResponse
+     * Result content of the tool call
+     * @type {string}
+     * @memberof ToolCallResponseContent
      */
-    'total_sessions': number;
+    'result_content': string;
     /**
-     * Whether there are more sessions available
+     * Whether the tool call failed
      * @type {boolean}
-     * @memberof SidebarSessionsResponse
+     * @memberof ToolCallResponseContent
      */
-    'has_more': boolean;
+    'is_tool_call_error': boolean;
     /**
-     * Pagination information
-     * @type {{ [key: string]: any; }}
-     * @memberof SidebarSessionsResponse
+     * Time taken to call the tool
+     * @type {number}
+     * @memberof ToolCallResponseContent
      */
-    'pagination': { [key: string]: any; };
+    'total_response_time': number;
 }
 /**
  * 
@@ -383,36 +471,6 @@ export interface ValidationError {
  */
 export const DefaultApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
-        /**
-         * Serve favicon.ico to prevent 404 errors.
-         * @summary Get Favicon
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getFaviconFaviconIcoGet: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/favicon.ico`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
         /**
          * Get all messages for a specific session.
          * @summary Get Session Messages
@@ -599,66 +657,6 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
                 options: localVarRequestOptions,
             };
         },
-        /**
-         * Health check endpoint for Cloud Run.
-         * @summary Read Root
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        readRootGet: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Serve the main Volcani chat interface.
-         * @summary Serve Ui
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        serveUiUiGet: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/ui`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
     }
 };
 
@@ -670,25 +668,13 @@ export const DefaultApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = DefaultApiAxiosParamCreator(configuration)
     return {
         /**
-         * Serve favicon.ico to prevent 404 errors.
-         * @summary Get Favicon
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getFaviconFaviconIcoGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getFaviconFaviconIcoGet(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DefaultApi.getFaviconFaviconIcoGet']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
          * Get all messages for a specific session.
          * @summary Get Session Messages
          * @param {string} sessionId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getSessionMessagesApiSessionsSessionIdMessagesGet(sessionId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SessionMessagesResponse>> {
+        async getSessionMessagesApiSessionsSessionIdMessagesGet(sessionId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChatMessagesResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getSessionMessagesApiSessionsSessionIdMessagesGet(sessionId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['DefaultApi.getSessionMessagesApiSessionsSessionIdMessagesGet']?.[localVarOperationServerIndex]?.url;
@@ -714,7 +700,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getUserSessionsApiSessionsGet(limit?: number, offset?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SidebarSessionsResponse>> {
+        async getUserSessionsApiSessionsGet(limit?: number, offset?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChatSessionResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getUserSessionsApiSessionsGet(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['DefaultApi.getUserSessionsApiSessionsGet']?.[localVarOperationServerIndex]?.url;
@@ -746,30 +732,6 @@ export const DefaultApiFp = function(configuration?: Configuration) {
             const localVarOperationServerBasePath = operationServerMap['DefaultApi.invokeAgentInvokePost']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
-        /**
-         * Health check endpoint for Cloud Run.
-         * @summary Read Root
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async readRootGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.readRootGet(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DefaultApi.readRootGet']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Serve the main Volcani chat interface.
-         * @summary Serve Ui
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async serveUiUiGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.serveUiUiGet(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DefaultApi.serveUiUiGet']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
     }
 };
 
@@ -781,22 +743,13 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
     const localVarFp = DefaultApiFp(configuration)
     return {
         /**
-         * Serve favicon.ico to prevent 404 errors.
-         * @summary Get Favicon
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getFaviconFaviconIcoGet(options?: RawAxiosRequestConfig): AxiosPromise<any> {
-            return localVarFp.getFaviconFaviconIcoGet(options).then((request) => request(axios, basePath));
-        },
-        /**
          * Get all messages for a specific session.
          * @summary Get Session Messages
          * @param {string} sessionId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSessionMessagesApiSessionsSessionIdMessagesGet(sessionId: string, options?: RawAxiosRequestConfig): AxiosPromise<SessionMessagesResponse> {
+        getSessionMessagesApiSessionsSessionIdMessagesGet(sessionId: string, options?: RawAxiosRequestConfig): AxiosPromise<ChatMessagesResponse> {
             return localVarFp.getSessionMessagesApiSessionsSessionIdMessagesGet(sessionId, options).then((request) => request(axios, basePath));
         },
         /**
@@ -816,7 +769,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getUserSessionsApiSessionsGet(limit?: number, offset?: number, options?: RawAxiosRequestConfig): AxiosPromise<SidebarSessionsResponse> {
+        getUserSessionsApiSessionsGet(limit?: number, offset?: number, options?: RawAxiosRequestConfig): AxiosPromise<ChatSessionResponse> {
             return localVarFp.getUserSessionsApiSessionsGet(limit, offset, options).then((request) => request(axios, basePath));
         },
         /**
@@ -839,24 +792,6 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         invokeAgentInvokePost(invokeRequest: InvokeRequest, accept?: string, options?: RawAxiosRequestConfig): AxiosPromise<InvokeResponse> {
             return localVarFp.invokeAgentInvokePost(invokeRequest, accept, options).then((request) => request(axios, basePath));
         },
-        /**
-         * Health check endpoint for Cloud Run.
-         * @summary Read Root
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        readRootGet(options?: RawAxiosRequestConfig): AxiosPromise<any> {
-            return localVarFp.readRootGet(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Serve the main Volcani chat interface.
-         * @summary Serve Ui
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        serveUiUiGet(options?: RawAxiosRequestConfig): AxiosPromise<any> {
-            return localVarFp.serveUiUiGet(options).then((request) => request(axios, basePath));
-        },
     };
 };
 
@@ -867,17 +802,6 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
  * @extends {BaseAPI}
  */
 export class DefaultApi extends BaseAPI {
-    /**
-     * Serve favicon.ico to prevent 404 errors.
-     * @summary Get Favicon
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApi
-     */
-    public getFaviconFaviconIcoGet(options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).getFaviconFaviconIcoGet(options).then((request) => request(this.axios, this.basePath));
-    }
-
     /**
      * Get all messages for a specific session.
      * @summary Get Session Messages
@@ -936,28 +860,6 @@ export class DefaultApi extends BaseAPI {
      */
     public invokeAgentInvokePost(invokeRequest: InvokeRequest, accept?: string, options?: RawAxiosRequestConfig) {
         return DefaultApiFp(this.configuration).invokeAgentInvokePost(invokeRequest, accept, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Health check endpoint for Cloud Run.
-     * @summary Read Root
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApi
-     */
-    public readRootGet(options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).readRootGet(options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Serve the main Volcani chat interface.
-     * @summary Serve Ui
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApi
-     */
-    public serveUiUiGet(options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).serveUiUiGet(options).then((request) => request(this.axios, this.basePath));
     }
 }
 

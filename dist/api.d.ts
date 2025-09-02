@@ -14,23 +14,44 @@ import type { AxiosPromise, AxiosInstance, RawAxiosRequestConfig } from 'axios';
 import type { RequestArgs } from './base';
 import { BaseAPI } from './base';
 /**
+ * Arguments for the tool call
+ * @export
+ * @interface Args
+ */
+export interface Args {
+}
+/**
  * A block with type and content.
  * @export
  * @interface Block
  */
 export interface Block {
     /**
-     * Type of the block
+     * Unique identifier for the block
+     * @type {string}
+     * @memberof Block
+     */
+    'id': string;
+    /**
+     * Type of the block (markdown, component, tool_call_request, tool_call_response, etc.)
      * @type {string}
      * @memberof Block
      */
     'type': string;
     /**
-     * Content data for the block
-     * @type {any}
+     *
+     * @type {Content}
      * @memberof Block
      */
-    'content': any;
+    'content': Content | null;
+    /**
+     *
+     * @type {{ [key: string]: any; }}
+     * @memberof Block
+     */
+    'metadata'?: {
+        [key: string]: any;
+    } | null;
 }
 /**
  * Schema definition for a block type.
@@ -90,17 +111,11 @@ export interface ChatMessage {
      */
     'timestamp': string;
     /**
-     * Role: \'user\', \'assistant\', or \'tool_call\'
+     * Role: \'user\', \'assistant\', or \'system\'
      * @type {string}
      * @memberof ChatMessage
      */
     'role': string;
-    /**
-     * Message content
-     * @type {string}
-     * @memberof ChatMessage
-     */
-    'content': string;
     /**
      *
      * @type {Array<Block>}
@@ -115,38 +130,182 @@ export interface ChatMessage {
     'metadata'?: {
         [key: string]: any;
     };
+}
+/**
+ * Response model for session messages.
+ * @export
+ * @interface ChatMessagesResponse
+ */
+export interface ChatMessagesResponse {
     /**
-     *
+     * Session identifier
      * @type {string}
-     * @memberof ChatMessage
+     * @memberof ChatMessagesResponse
      */
-    'tool_name'?: string | null;
+    'session_id': string;
     /**
-     *
-     * @type {{ [key: string]: any; }}
-     * @memberof ChatMessage
-     */
-    'tool_args'?: {
-        [key: string]: any;
-    } | null;
-    /**
-     *
+     * User identifier
      * @type {string}
-     * @memberof ChatMessage
+     * @memberof ChatMessagesResponse
      */
-    'tool_result'?: string | null;
+    'user_id': string;
     /**
-     *
+     * List of messages in the session
+     * @type {Array<ChatMessage>}
+     * @memberof ChatMessagesResponse
+     */
+    'messages': Array<ChatMessage>;
+    /**
+     * Total number of messages in the session
+     * @type {number}
+     * @memberof ChatMessagesResponse
+     */
+    'total_messages': number;
+    /**
+     * Always False - no pagination
      * @type {boolean}
-     * @memberof ChatMessage
+     * @memberof ChatMessagesResponse
      */
-    'tool_error'?: boolean | null;
+    'has_more': boolean;
+    /**
+     * Total message count only
+     * @type {{ [key: string]: any; }}
+     * @memberof ChatMessagesResponse
+     */
+    'pagination': {
+        [key: string]: any;
+    };
+}
+/**
+ * Session data for sidebar display.
+ * @export
+ * @interface ChatSession
+ */
+export interface ChatSession {
+    /**
+     * Session identifier
+     * @type {string}
+     * @memberof ChatSession
+     */
+    'session_id': string;
+    /**
+     * Session name (generated from first message)
+     * @type {string}
+     * @memberof ChatSession
+     */
+    'name': string;
+    /**
+     * User identifier
+     * @type {string}
+     * @memberof ChatSession
+     */
+    'user_id': string;
     /**
      *
      * @type {string}
-     * @memberof ChatMessage
+     * @memberof ChatSession
      */
-    'type'?: string | null;
+    'created_at'?: string | null;
+    /**
+     *
+     * @type {string}
+     * @memberof ChatSession
+     */
+    'updated_at'?: string | null;
+    /**
+     * Number of messages in the session
+     * @type {number}
+     * @memberof ChatSession
+     */
+    'message_count': number;
+    /**
+     * Preview of the last message
+     * @type {string}
+     * @memberof ChatSession
+     */
+    'last_message_preview': string;
+}
+/**
+ * Response model for sidebar sessions.
+ * @export
+ * @interface ChatSessionResponse
+ */
+export interface ChatSessionResponse {
+    /**
+     * User identifier
+     * @type {string}
+     * @memberof ChatSessionResponse
+     */
+    'user_id': string;
+    /**
+     * List of sessions for sidebar
+     * @type {Array<ChatSession>}
+     * @memberof ChatSessionResponse
+     */
+    'sessions': Array<ChatSession>;
+    /**
+     * Total number of sessions available
+     * @type {number}
+     * @memberof ChatSessionResponse
+     */
+    'total_sessions': number;
+    /**
+     * Whether there are more sessions available
+     * @type {boolean}
+     * @memberof ChatSessionResponse
+     */
+    'has_more': boolean;
+    /**
+     * Pagination information
+     * @type {{ [key: string]: any; }}
+     * @memberof ChatSessionResponse
+     */
+    'pagination': {
+        [key: string]: any;
+    };
+}
+/**
+ * Content data for the block
+ * @export
+ * @interface Content
+ */
+export interface Content {
+    /**
+     * ID of the tool call
+     * @type {string}
+     * @memberof Content
+     */
+    'tool_call_id': string;
+    /**
+     * Name of the tool call
+     * @type {string}
+     * @memberof Content
+     */
+    'name': string;
+    /**
+     *
+     * @type {Args}
+     * @memberof Content
+     */
+    'args'?: Args;
+    /**
+     * Result content of the tool call
+     * @type {string}
+     * @memberof Content
+     */
+    'result_content': string;
+    /**
+     * Whether the tool call failed
+     * @type {boolean}
+     * @memberof Content
+     */
+    'is_tool_call_error': boolean;
+    /**
+     * Time taken to call the tool
+     * @type {number}
+     * @memberof Content
+     */
+    'total_response_time': number;
 }
 /**
  *
@@ -221,137 +380,66 @@ export interface InvokeResponse {
 export interface LocationInner {
 }
 /**
- * Response model for session messages.
+ *
  * @export
- * @interface SessionMessagesResponse
+ * @interface ToolCallRequestContent
  */
-export interface SessionMessagesResponse {
+export interface ToolCallRequestContent {
     /**
-     * Session identifier
+     * ID of the tool call
      * @type {string}
-     * @memberof SessionMessagesResponse
+     * @memberof ToolCallRequestContent
      */
-    'session_id': string;
+    'tool_call_id': string;
     /**
-     * User identifier
+     * Name of the tool call
      * @type {string}
-     * @memberof SessionMessagesResponse
-     */
-    'user_id': string;
-    /**
-     * List of messages in the session
-     * @type {Array<ChatMessage>}
-     * @memberof SessionMessagesResponse
-     */
-    'messages': Array<ChatMessage>;
-    /**
-     * Total number of messages in the session
-     * @type {number}
-     * @memberof SessionMessagesResponse
-     */
-    'total_messages': number;
-    /**
-     * Always False - no pagination
-     * @type {boolean}
-     * @memberof SessionMessagesResponse
-     */
-    'has_more': boolean;
-    /**
-     * Total message count only
-     * @type {{ [key: string]: any; }}
-     * @memberof SessionMessagesResponse
-     */
-    'pagination': {
-        [key: string]: any;
-    };
-}
-/**
- * Session data for sidebar display.
- * @export
- * @interface SidebarSession
- */
-export interface SidebarSession {
-    /**
-     * Session identifier
-     * @type {string}
-     * @memberof SidebarSession
-     */
-    'session_id': string;
-    /**
-     * Session name (generated from first message)
-     * @type {string}
-     * @memberof SidebarSession
+     * @memberof ToolCallRequestContent
      */
     'name': string;
     /**
-     * User identifier
-     * @type {string}
-     * @memberof SidebarSession
-     */
-    'user_id': string;
-    /**
      *
-     * @type {string}
-     * @memberof SidebarSession
+     * @type {Args}
+     * @memberof ToolCallRequestContent
      */
-    'created_at'?: string | null;
-    /**
-     *
-     * @type {string}
-     * @memberof SidebarSession
-     */
-    'updated_at'?: string | null;
-    /**
-     * Number of messages in the session
-     * @type {number}
-     * @memberof SidebarSession
-     */
-    'message_count': number;
-    /**
-     * Preview of the last message
-     * @type {string}
-     * @memberof SidebarSession
-     */
-    'last_message_preview': string;
+    'args'?: Args;
 }
 /**
- * Response model for sidebar sessions.
+ *
  * @export
- * @interface SidebarSessionsResponse
+ * @interface ToolCallResponseContent
  */
-export interface SidebarSessionsResponse {
+export interface ToolCallResponseContent {
     /**
-     * User identifier
+     * ID of the tool call
      * @type {string}
-     * @memberof SidebarSessionsResponse
+     * @memberof ToolCallResponseContent
      */
-    'user_id': string;
+    'tool_call_id': string;
     /**
-     * List of sessions for sidebar
-     * @type {Array<SidebarSession>}
-     * @memberof SidebarSessionsResponse
+     * Name of the tool call
+     * @type {string}
+     * @memberof ToolCallResponseContent
      */
-    'sessions': Array<SidebarSession>;
+    'name': string;
     /**
-     * Total number of sessions available
-     * @type {number}
-     * @memberof SidebarSessionsResponse
+     * Result content of the tool call
+     * @type {string}
+     * @memberof ToolCallResponseContent
      */
-    'total_sessions': number;
+    'result_content': string;
     /**
-     * Whether there are more sessions available
+     * Whether the tool call failed
      * @type {boolean}
-     * @memberof SidebarSessionsResponse
+     * @memberof ToolCallResponseContent
      */
-    'has_more': boolean;
+    'is_tool_call_error': boolean;
     /**
-     * Pagination information
-     * @type {{ [key: string]: any; }}
-     * @memberof SidebarSessionsResponse
+     * Time taken to call the tool
+     * @type {number}
+     * @memberof ToolCallResponseContent
      */
-    'pagination': {
-        [key: string]: any;
-    };
+    'total_response_time': number;
 }
 /**
  *
@@ -383,13 +471,6 @@ export interface ValidationError {
  * @export
  */
 export declare const DefaultApiAxiosParamCreator: (configuration?: Configuration) => {
-    /**
-     * Serve favicon.ico to prevent 404 errors.
-     * @summary Get Favicon
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    getFaviconFaviconIcoGet: (options?: RawAxiosRequestConfig) => Promise<RequestArgs>;
     /**
      * Get all messages for a specific session.
      * @summary Get Session Messages
@@ -430,20 +511,6 @@ export declare const DefaultApiAxiosParamCreator: (configuration?: Configuration
      * @throws {RequiredError}
      */
     invokeAgentInvokePost: (invokeRequest: InvokeRequest, accept?: string, options?: RawAxiosRequestConfig) => Promise<RequestArgs>;
-    /**
-     * Health check endpoint for Cloud Run.
-     * @summary Read Root
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    readRootGet: (options?: RawAxiosRequestConfig) => Promise<RequestArgs>;
-    /**
-     * Serve the main Volcani chat interface.
-     * @summary Serve Ui
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    serveUiUiGet: (options?: RawAxiosRequestConfig) => Promise<RequestArgs>;
 };
 /**
  * DefaultApi - functional programming interface
@@ -451,20 +518,13 @@ export declare const DefaultApiAxiosParamCreator: (configuration?: Configuration
  */
 export declare const DefaultApiFp: (configuration?: Configuration) => {
     /**
-     * Serve favicon.ico to prevent 404 errors.
-     * @summary Get Favicon
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    getFaviconFaviconIcoGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>>;
-    /**
      * Get all messages for a specific session.
      * @summary Get Session Messages
      * @param {string} sessionId
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getSessionMessagesApiSessionsSessionIdMessagesGet(sessionId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SessionMessagesResponse>>;
+    getSessionMessagesApiSessionsSessionIdMessagesGet(sessionId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChatMessagesResponse>>;
     /**
      * Get the current status of the agent.
      * @summary Get Status
@@ -480,7 +540,7 @@ export declare const DefaultApiFp: (configuration?: Configuration) => {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getUserSessionsApiSessionsGet(limit?: number, offset?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SidebarSessionsResponse>>;
+    getUserSessionsApiSessionsGet(limit?: number, offset?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChatSessionResponse>>;
     /**
      * Health check endpoint that doesn\'t require authentication.
      * @summary Health Check
@@ -497,20 +557,6 @@ export declare const DefaultApiFp: (configuration?: Configuration) => {
      * @throws {RequiredError}
      */
     invokeAgentInvokePost(invokeRequest: InvokeRequest, accept?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InvokeResponse>>;
-    /**
-     * Health check endpoint for Cloud Run.
-     * @summary Read Root
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    readRootGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>>;
-    /**
-     * Serve the main Volcani chat interface.
-     * @summary Serve Ui
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    serveUiUiGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>>;
 };
 /**
  * DefaultApi - factory interface
@@ -518,20 +564,13 @@ export declare const DefaultApiFp: (configuration?: Configuration) => {
  */
 export declare const DefaultApiFactory: (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) => {
     /**
-     * Serve favicon.ico to prevent 404 errors.
-     * @summary Get Favicon
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    getFaviconFaviconIcoGet(options?: RawAxiosRequestConfig): AxiosPromise<any>;
-    /**
      * Get all messages for a specific session.
      * @summary Get Session Messages
      * @param {string} sessionId
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getSessionMessagesApiSessionsSessionIdMessagesGet(sessionId: string, options?: RawAxiosRequestConfig): AxiosPromise<SessionMessagesResponse>;
+    getSessionMessagesApiSessionsSessionIdMessagesGet(sessionId: string, options?: RawAxiosRequestConfig): AxiosPromise<ChatMessagesResponse>;
     /**
      * Get the current status of the agent.
      * @summary Get Status
@@ -547,7 +586,7 @@ export declare const DefaultApiFactory: (configuration?: Configuration, basePath
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getUserSessionsApiSessionsGet(limit?: number, offset?: number, options?: RawAxiosRequestConfig): AxiosPromise<SidebarSessionsResponse>;
+    getUserSessionsApiSessionsGet(limit?: number, offset?: number, options?: RawAxiosRequestConfig): AxiosPromise<ChatSessionResponse>;
     /**
      * Health check endpoint that doesn\'t require authentication.
      * @summary Health Check
@@ -564,20 +603,6 @@ export declare const DefaultApiFactory: (configuration?: Configuration, basePath
      * @throws {RequiredError}
      */
     invokeAgentInvokePost(invokeRequest: InvokeRequest, accept?: string, options?: RawAxiosRequestConfig): AxiosPromise<InvokeResponse>;
-    /**
-     * Health check endpoint for Cloud Run.
-     * @summary Read Root
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    readRootGet(options?: RawAxiosRequestConfig): AxiosPromise<any>;
-    /**
-     * Serve the main Volcani chat interface.
-     * @summary Serve Ui
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    serveUiUiGet(options?: RawAxiosRequestConfig): AxiosPromise<any>;
 };
 /**
  * DefaultApi - object-oriented interface
@@ -587,14 +612,6 @@ export declare const DefaultApiFactory: (configuration?: Configuration, basePath
  */
 export declare class DefaultApi extends BaseAPI {
     /**
-     * Serve favicon.ico to prevent 404 errors.
-     * @summary Get Favicon
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApi
-     */
-    getFaviconFaviconIcoGet(options?: RawAxiosRequestConfig): Promise<import("axios").AxiosResponse<any, any>>;
-    /**
      * Get all messages for a specific session.
      * @summary Get Session Messages
      * @param {string} sessionId
@@ -602,7 +619,7 @@ export declare class DefaultApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    getSessionMessagesApiSessionsSessionIdMessagesGet(sessionId: string, options?: RawAxiosRequestConfig): Promise<import("axios").AxiosResponse<SessionMessagesResponse, any>>;
+    getSessionMessagesApiSessionsSessionIdMessagesGet(sessionId: string, options?: RawAxiosRequestConfig): Promise<import("axios").AxiosResponse<ChatMessagesResponse, any>>;
     /**
      * Get the current status of the agent.
      * @summary Get Status
@@ -620,7 +637,7 @@ export declare class DefaultApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    getUserSessionsApiSessionsGet(limit?: number, offset?: number, options?: RawAxiosRequestConfig): Promise<import("axios").AxiosResponse<SidebarSessionsResponse, any>>;
+    getUserSessionsApiSessionsGet(limit?: number, offset?: number, options?: RawAxiosRequestConfig): Promise<import("axios").AxiosResponse<ChatSessionResponse, any>>;
     /**
      * Health check endpoint that doesn\'t require authentication.
      * @summary Health Check
@@ -639,20 +656,4 @@ export declare class DefaultApi extends BaseAPI {
      * @memberof DefaultApi
      */
     invokeAgentInvokePost(invokeRequest: InvokeRequest, accept?: string, options?: RawAxiosRequestConfig): Promise<import("axios").AxiosResponse<InvokeResponse, any>>;
-    /**
-     * Health check endpoint for Cloud Run.
-     * @summary Read Root
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApi
-     */
-    readRootGet(options?: RawAxiosRequestConfig): Promise<import("axios").AxiosResponse<any, any>>;
-    /**
-     * Serve the main Volcani chat interface.
-     * @summary Serve Ui
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApi
-     */
-    serveUiUiGet(options?: RawAxiosRequestConfig): Promise<import("axios").AxiosResponse<any, any>>;
 }

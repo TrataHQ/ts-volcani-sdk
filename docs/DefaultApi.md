@@ -4,61 +4,14 @@ All URIs are relative to *http://localhost*
 
 |Method | HTTP request | Description|
 |------------- | ------------- | -------------|
-|[**getFaviconFaviconIcoGet**](#getfaviconfaviconicoget) | **GET** /favicon.ico | Get Favicon|
 |[**getSessionMessagesApiSessionsSessionIdMessagesGet**](#getsessionmessagesapisessionssessionidmessagesget) | **GET** /api/sessions/{session_id}/messages | Get Session Messages|
 |[**getStatusStatusGet**](#getstatusstatusget) | **GET** /status | Get Status|
 |[**getUserSessionsApiSessionsGet**](#getusersessionsapisessionsget) | **GET** /api/sessions | Get User Sessions|
 |[**healthCheckHealthGet**](#healthcheckhealthget) | **GET** /health | Health Check|
 |[**invokeAgentInvokePost**](#invokeagentinvokepost) | **POST** /invoke | Invoke Agent|
-|[**readRootGet**](#readrootget) | **GET** / | Read Root|
-|[**serveUiUiGet**](#serveuiuiget) | **GET** /ui | Serve Ui|
-
-# **getFaviconFaviconIcoGet**
-> any getFaviconFaviconIcoGet()
-
-Serve favicon.ico to prevent 404 errors.
-
-### Example
-
-```typescript
-import {
-    DefaultApi,
-    Configuration
-} from '@trata/ts-volcani-sdk';
-
-const configuration = new Configuration();
-const apiInstance = new DefaultApi(configuration);
-
-const { status, data } = await apiInstance.getFaviconFaviconIcoGet();
-```
-
-### Parameters
-This endpoint does not have any parameters.
-
-
-### Return type
-
-**any**
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/json
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-|**200** | Successful Response |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **getSessionMessagesApiSessionsSessionIdMessagesGet**
-> SessionMessagesResponse getSessionMessagesApiSessionsSessionIdMessagesGet()
+> ChatMessagesResponse getSessionMessagesApiSessionsSessionIdMessagesGet()
 
 Get all messages for a specific session.
 
@@ -89,7 +42,7 @@ const { status, data } = await apiInstance.getSessionMessagesApiSessionsSessionI
 
 ### Return type
 
-**SessionMessagesResponse**
+**ChatMessagesResponse**
 
 ### Authorization
 
@@ -154,7 +107,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **getUserSessionsApiSessionsGet**
-> SidebarSessionsResponse getUserSessionsApiSessionsGet()
+> ChatSessionResponse getUserSessionsApiSessionsGet()
 
 Get sessions for sidebar with names and message counts.
 
@@ -188,7 +141,7 @@ const { status, data } = await apiInstance.getUserSessionsApiSessionsGet(
 
 ### Return type
 
-**SidebarSessionsResponse**
+**ChatSessionResponse**
 
 ### Authorization
 
@@ -305,94 +258,6 @@ const { status, data } = await apiInstance.invokeAgentInvokePost(
 |-------------|-------------|------------------|
 |**200** | Successful Response |  -  |
 |**422** | Validation Error |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **readRootGet**
-> any readRootGet()
-
-Health check endpoint for Cloud Run.
-
-### Example
-
-```typescript
-import {
-    DefaultApi,
-    Configuration
-} from '@trata/ts-volcani-sdk';
-
-const configuration = new Configuration();
-const apiInstance = new DefaultApi(configuration);
-
-const { status, data } = await apiInstance.readRootGet();
-```
-
-### Parameters
-This endpoint does not have any parameters.
-
-
-### Return type
-
-**any**
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/json
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-|**200** | Successful Response |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **serveUiUiGet**
-> any serveUiUiGet()
-
-Serve the main Volcani chat interface.
-
-### Example
-
-```typescript
-import {
-    DefaultApi,
-    Configuration
-} from '@trata/ts-volcani-sdk';
-
-const configuration = new Configuration();
-const apiInstance = new DefaultApi(configuration);
-
-const { status, data } = await apiInstance.serveUiUiGet();
-```
-
-### Parameters
-This endpoint does not have any parameters.
-
-
-### Return type
-
-**any**
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/json
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-|**200** | Successful Response |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

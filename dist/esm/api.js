@@ -33,31 +33,6 @@ import { BASE_PATH, BaseAPI, operationServerMap } from './base';
 export const DefaultApiAxiosParamCreator = function (configuration) {
     return {
         /**
-         * Serve favicon.ico to prevent 404 errors.
-         * @summary Get Favicon
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getFaviconFaviconIcoGet: (...args_1) => __awaiter(this, [...args_1], void 0, function* (options = {}) {
-            const localVarPath = `/favicon.ico`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = Object.assign(Object.assign({ method: 'GET' }, baseOptions), options);
-            const localVarHeaderParameter = {};
-            const localVarQueryParameter = {};
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        }),
-        /**
          * Get all messages for a specific session.
          * @summary Get Session Messages
          * @param {string} sessionId
@@ -212,56 +187,6 @@ export const DefaultApiAxiosParamCreator = function (configuration) {
                 options: localVarRequestOptions,
             };
         }),
-        /**
-         * Health check endpoint for Cloud Run.
-         * @summary Read Root
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        readRootGet: (...args_1) => __awaiter(this, [...args_1], void 0, function* (options = {}) {
-            const localVarPath = `/`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = Object.assign(Object.assign({ method: 'GET' }, baseOptions), options);
-            const localVarHeaderParameter = {};
-            const localVarQueryParameter = {};
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        }),
-        /**
-         * Serve the main Volcani chat interface.
-         * @summary Serve Ui
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        serveUiUiGet: (...args_1) => __awaiter(this, [...args_1], void 0, function* (options = {}) {
-            const localVarPath = `/ui`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = Object.assign(Object.assign({ method: 'GET' }, baseOptions), options);
-            const localVarHeaderParameter = {};
-            const localVarQueryParameter = {};
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        }),
     };
 };
 /**
@@ -271,21 +196,6 @@ export const DefaultApiAxiosParamCreator = function (configuration) {
 export const DefaultApiFp = function (configuration) {
     const localVarAxiosParamCreator = DefaultApiAxiosParamCreator(configuration);
     return {
-        /**
-         * Serve favicon.ico to prevent 404 errors.
-         * @summary Get Favicon
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getFaviconFaviconIcoGet(options) {
-            return __awaiter(this, void 0, void 0, function* () {
-                var _a, _b, _c;
-                const localVarAxiosArgs = yield localVarAxiosParamCreator.getFaviconFaviconIcoGet(options);
-                const localVarOperationServerIndex = (_a = configuration === null || configuration === void 0 ? void 0 : configuration.serverIndex) !== null && _a !== void 0 ? _a : 0;
-                const localVarOperationServerBasePath = (_c = (_b = operationServerMap['DefaultApi.getFaviconFaviconIcoGet']) === null || _b === void 0 ? void 0 : _b[localVarOperationServerIndex]) === null || _c === void 0 ? void 0 : _c.url;
-                return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-            });
-        },
         /**
          * Get all messages for a specific session.
          * @summary Get Session Messages
@@ -366,36 +276,6 @@ export const DefaultApiFp = function (configuration) {
                 return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
             });
         },
-        /**
-         * Health check endpoint for Cloud Run.
-         * @summary Read Root
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        readRootGet(options) {
-            return __awaiter(this, void 0, void 0, function* () {
-                var _a, _b, _c;
-                const localVarAxiosArgs = yield localVarAxiosParamCreator.readRootGet(options);
-                const localVarOperationServerIndex = (_a = configuration === null || configuration === void 0 ? void 0 : configuration.serverIndex) !== null && _a !== void 0 ? _a : 0;
-                const localVarOperationServerBasePath = (_c = (_b = operationServerMap['DefaultApi.readRootGet']) === null || _b === void 0 ? void 0 : _b[localVarOperationServerIndex]) === null || _c === void 0 ? void 0 : _c.url;
-                return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-            });
-        },
-        /**
-         * Serve the main Volcani chat interface.
-         * @summary Serve Ui
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        serveUiUiGet(options) {
-            return __awaiter(this, void 0, void 0, function* () {
-                var _a, _b, _c;
-                const localVarAxiosArgs = yield localVarAxiosParamCreator.serveUiUiGet(options);
-                const localVarOperationServerIndex = (_a = configuration === null || configuration === void 0 ? void 0 : configuration.serverIndex) !== null && _a !== void 0 ? _a : 0;
-                const localVarOperationServerBasePath = (_c = (_b = operationServerMap['DefaultApi.serveUiUiGet']) === null || _b === void 0 ? void 0 : _b[localVarOperationServerIndex]) === null || _c === void 0 ? void 0 : _c.url;
-                return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-            });
-        },
     };
 };
 /**
@@ -405,15 +285,6 @@ export const DefaultApiFp = function (configuration) {
 export const DefaultApiFactory = function (configuration, basePath, axios) {
     const localVarFp = DefaultApiFp(configuration);
     return {
-        /**
-         * Serve favicon.ico to prevent 404 errors.
-         * @summary Get Favicon
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getFaviconFaviconIcoGet(options) {
-            return localVarFp.getFaviconFaviconIcoGet(options).then((request) => request(axios, basePath));
-        },
         /**
          * Get all messages for a specific session.
          * @summary Get Session Messages
@@ -464,24 +335,6 @@ export const DefaultApiFactory = function (configuration, basePath, axios) {
         invokeAgentInvokePost(invokeRequest, accept, options) {
             return localVarFp.invokeAgentInvokePost(invokeRequest, accept, options).then((request) => request(axios, basePath));
         },
-        /**
-         * Health check endpoint for Cloud Run.
-         * @summary Read Root
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        readRootGet(options) {
-            return localVarFp.readRootGet(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Serve the main Volcani chat interface.
-         * @summary Serve Ui
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        serveUiUiGet(options) {
-            return localVarFp.serveUiUiGet(options).then((request) => request(axios, basePath));
-        },
     };
 };
 /**
@@ -491,16 +344,6 @@ export const DefaultApiFactory = function (configuration, basePath, axios) {
  * @extends {BaseAPI}
  */
 export class DefaultApi extends BaseAPI {
-    /**
-     * Serve favicon.ico to prevent 404 errors.
-     * @summary Get Favicon
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApi
-     */
-    getFaviconFaviconIcoGet(options) {
-        return DefaultApiFp(this.configuration).getFaviconFaviconIcoGet(options).then((request) => request(this.axios, this.basePath));
-    }
     /**
      * Get all messages for a specific session.
      * @summary Get Session Messages
@@ -555,25 +398,5 @@ export class DefaultApi extends BaseAPI {
      */
     invokeAgentInvokePost(invokeRequest, accept, options) {
         return DefaultApiFp(this.configuration).invokeAgentInvokePost(invokeRequest, accept, options).then((request) => request(this.axios, this.basePath));
-    }
-    /**
-     * Health check endpoint for Cloud Run.
-     * @summary Read Root
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApi
-     */
-    readRootGet(options) {
-        return DefaultApiFp(this.configuration).readRootGet(options).then((request) => request(this.axios, this.basePath));
-    }
-    /**
-     * Serve the main Volcani chat interface.
-     * @summary Serve Ui
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApi
-     */
-    serveUiUiGet(options) {
-        return DefaultApiFp(this.configuration).serveUiUiGet(options).then((request) => request(this.axios, this.basePath));
     }
 }

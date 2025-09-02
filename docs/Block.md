@@ -6,8 +6,10 @@ A block with type and content.
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**type** | **string** | Type of the block | [default to undefined]
-**content** | **any** | Content data for the block | [default to undefined]
+**id** | **string** | Unique identifier for the block | [default to undefined]
+**type** | **string** | Type of the block (markdown, component, tool_call_request, tool_call_response, etc.) | [default to undefined]
+**content** | [**Content**](Content.md) |  | [default to undefined]
+**metadata** | **{ [key: string]: any; }** |  | [optional] [default to undefined]
 
 ## Example
 
@@ -15,8 +17,10 @@ Name | Type | Description | Notes
 import { Block } from '@trata/ts-volcani-sdk';
 
 const instance: Block = {
+    id,
     type,
     content,
+    metadata,
 };
 ```
 
