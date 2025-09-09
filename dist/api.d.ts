@@ -290,10 +290,12 @@ export interface Content {
     'args'?: Args;
     /**
      * Result content of the tool call
-     * @type {string}
+     * @type {{ [key: string]: any; }}
      * @memberof Content
      */
-    'result_content': string;
+    'result_content': {
+        [key: string]: any;
+    };
     /**
      * Whether the tool call failed
      * @type {boolean}
@@ -358,6 +360,12 @@ export interface InvokeResponse {
      */
     'session_id': string;
     /**
+     *
+     * @type {string}
+     * @memberof InvokeResponse
+     */
+    'trace_id'?: string | null;
+    /**
      * List of blocks with type and content
      * @type {Array<Block>}
      * @memberof InvokeResponse
@@ -378,6 +386,19 @@ export interface InvokeResponse {
  * @interface LocationInner
  */
 export interface LocationInner {
+}
+/**
+ * Response model for session suggestion queries.
+ * @export
+ * @interface SuggestionsResponse
+ */
+export interface SuggestionsResponse {
+    /**
+     * List of suggestions for possible next user queries based on the previous query
+     * @type {Array<string>}
+     * @memberof SuggestionsResponse
+     */
+    'suggestions': Array<string>;
 }
 /**
  *
@@ -424,10 +445,12 @@ export interface ToolCallResponseContent {
     'name': string;
     /**
      * Result content of the tool call
-     * @type {string}
+     * @type {{ [key: string]: any; }}
      * @memberof ToolCallResponseContent
      */
-    'result_content': string;
+    'result_content': {
+        [key: string]: any;
+    };
     /**
      * Whether the tool call failed
      * @type {boolean}
@@ -480,6 +503,14 @@ export declare const DefaultApiAxiosParamCreator: (configuration?: Configuration
      */
     getSessionMessagesApiSessionsSessionIdMessagesGet: (sessionId: string, options?: RawAxiosRequestConfig) => Promise<RequestArgs>;
     /**
+     * Get suggestions for a specific session.
+     * @summary Get Session Suggestions
+     * @param {string} sessionId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getSessionSuggestionsApiSessionsSessionIdSuggestionsGet: (sessionId: string, options?: RawAxiosRequestConfig) => Promise<RequestArgs>;
+    /**
      * Get the current status of the agent.
      * @summary Get Status
      * @param {*} [options] Override http request option.
@@ -526,6 +557,14 @@ export declare const DefaultApiFp: (configuration?: Configuration) => {
      */
     getSessionMessagesApiSessionsSessionIdMessagesGet(sessionId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChatMessagesResponse>>;
     /**
+     * Get suggestions for a specific session.
+     * @summary Get Session Suggestions
+     * @param {string} sessionId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getSessionSuggestionsApiSessionsSessionIdSuggestionsGet(sessionId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SuggestionsResponse>>;
+    /**
      * Get the current status of the agent.
      * @summary Get Status
      * @param {*} [options] Override http request option.
@@ -571,6 +610,14 @@ export declare const DefaultApiFactory: (configuration?: Configuration, basePath
      * @throws {RequiredError}
      */
     getSessionMessagesApiSessionsSessionIdMessagesGet(sessionId: string, options?: RawAxiosRequestConfig): AxiosPromise<ChatMessagesResponse>;
+    /**
+     * Get suggestions for a specific session.
+     * @summary Get Session Suggestions
+     * @param {string} sessionId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getSessionSuggestionsApiSessionsSessionIdSuggestionsGet(sessionId: string, options?: RawAxiosRequestConfig): AxiosPromise<SuggestionsResponse>;
     /**
      * Get the current status of the agent.
      * @summary Get Status
@@ -620,6 +667,15 @@ export declare class DefaultApi extends BaseAPI {
      * @memberof DefaultApi
      */
     getSessionMessagesApiSessionsSessionIdMessagesGet(sessionId: string, options?: RawAxiosRequestConfig): Promise<import("axios").AxiosResponse<ChatMessagesResponse, any>>;
+    /**
+     * Get suggestions for a specific session.
+     * @summary Get Session Suggestions
+     * @param {string} sessionId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    getSessionSuggestionsApiSessionsSessionIdSuggestionsGet(sessionId: string, options?: RawAxiosRequestConfig): Promise<import("axios").AxiosResponse<SuggestionsResponse, any>>;
     /**
      * Get the current status of the agent.
      * @summary Get Status

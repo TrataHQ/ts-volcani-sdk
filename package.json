@@ -1,6 +1,6 @@
 {
   "name": "@trata/ts-volcani-sdk",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "OpenAPI client for @trata/ts-volcani-sdk",
   "author": "OpenAPI-Generator Contributors",
   "repository": {

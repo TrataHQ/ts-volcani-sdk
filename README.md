@@ -52,6 +52,7 @@ All URIs are relative to *http://localhost*
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *DefaultApi* | [**getSessionMessagesApiSessionsSessionIdMessagesGet**](docs/DefaultApi.md#getsessionmessagesapisessionssessionidmessagesget) | **GET** /api/sessions/{session_id}/messages | Get Session Messages
+*DefaultApi* | [**getSessionSuggestionsApiSessionsSessionIdSuggestionsGet**](docs/DefaultApi.md#getsessionsuggestionsapisessionssessionidsuggestionsget) | **GET** /api/sessions/{session_id}/suggestions | Get Session Suggestions
 *DefaultApi* | [**getStatusStatusGet**](docs/DefaultApi.md#getstatusstatusget) | **GET** /status | Get Status
 *DefaultApi* | [**getUserSessionsApiSessionsGet**](docs/DefaultApi.md#getusersessionsapisessionsget) | **GET** /api/sessions | Get User Sessions
 *DefaultApi* | [**healthCheckHealthGet**](docs/DefaultApi.md#healthcheckhealthget) | **GET** /health | Health Check
@@ -72,6 +73,7 @@ Class | Method | HTTP request | Description
  - [InvokeRequest](docs/InvokeRequest.md)
  - [InvokeResponse](docs/InvokeResponse.md)
  - [LocationInner](docs/LocationInner.md)
+ - [SuggestionsResponse](docs/SuggestionsResponse.md)
  - [ToolCallRequestContent](docs/ToolCallRequestContent.md)
  - [ToolCallResponseContent](docs/ToolCallResponseContent.md)
  - [ValidationError](docs/ValidationError.md)

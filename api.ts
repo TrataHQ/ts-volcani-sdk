@@ -290,10 +290,10 @@ export interface Content {
     'args'?: Args;
     /**
      * Result content of the tool call
-     * @type {string}
+     * @type {{ [key: string]: any; }}
      * @memberof Content
      */
-    'result_content': string;
+    'result_content': { [key: string]: any; };
     /**
      * Whether the tool call failed
      * @type {boolean}
@@ -358,6 +358,12 @@ export interface InvokeResponse {
      */
     'session_id': string;
     /**
+     * 
+     * @type {string}
+     * @memberof InvokeResponse
+     */
+    'trace_id'?: string | null;
+    /**
      * List of blocks with type and content
      * @type {Array<Block>}
      * @memberof InvokeResponse
@@ -376,6 +382,19 @@ export interface InvokeResponse {
  * @interface LocationInner
  */
 export interface LocationInner {
+}
+/**
+ * Response model for session suggestion queries.
+ * @export
+ * @interface SuggestionsResponse
+ */
+export interface SuggestionsResponse {
+    /**
+     * List of suggestions for possible next user queries based on the previous query
+     * @type {Array<string>}
+     * @memberof SuggestionsResponse
+     */
+    'suggestions': Array<string>;
 }
 /**
  * 
@@ -422,10 +441,10 @@ export interface ToolCallResponseContent {
     'name': string;
     /**
      * Result content of the tool call
-     * @type {string}
+     * @type {{ [key: string]: any; }}
      * @memberof ToolCallResponseContent
      */
-    'result_content': string;
+    'result_content': { [key: string]: any; };
     /**
      * Whether the tool call failed
      * @type {boolean}
@@ -482,6 +501,44 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             // verify required parameter 'sessionId' is not null or undefined
             assertParamExists('getSessionMessagesApiSessionsSessionIdMessagesGet', 'sessionId', sessionId)
             const localVarPath = `/api/sessions/{session_id}/messages`
+                .replace(`{${"session_id"}}`, encodeURIComponent(String(sessionId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication HTTPBearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Get suggestions for a specific session.
+         * @summary Get Session Suggestions
+         * @param {string} sessionId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getSessionSuggestionsApiSessionsSessionIdSuggestionsGet: async (sessionId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'sessionId' is not null or undefined
+            assertParamExists('getSessionSuggestionsApiSessionsSessionIdSuggestionsGet', 'sessionId', sessionId)
+            const localVarPath = `/api/sessions/{session_id}/suggestions`
                 .replace(`{${"session_id"}}`, encodeURIComponent(String(sessionId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -681,6 +738,19 @@ export const DefaultApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * Get suggestions for a specific session.
+         * @summary Get Session Suggestions
+         * @param {string} sessionId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getSessionSuggestionsApiSessionsSessionIdSuggestionsGet(sessionId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SuggestionsResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getSessionSuggestionsApiSessionsSessionIdSuggestionsGet(sessionId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.getSessionSuggestionsApiSessionsSessionIdSuggestionsGet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * Get the current status of the agent.
          * @summary Get Status
          * @param {*} [options] Override http request option.
@@ -753,6 +823,16 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
             return localVarFp.getSessionMessagesApiSessionsSessionIdMessagesGet(sessionId, options).then((request) => request(axios, basePath));
         },
         /**
+         * Get suggestions for a specific session.
+         * @summary Get Session Suggestions
+         * @param {string} sessionId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getSessionSuggestionsApiSessionsSessionIdSuggestionsGet(sessionId: string, options?: RawAxiosRequestConfig): AxiosPromise<SuggestionsResponse> {
+            return localVarFp.getSessionSuggestionsApiSessionsSessionIdSuggestionsGet(sessionId, options).then((request) => request(axios, basePath));
+        },
+        /**
          * Get the current status of the agent.
          * @summary Get Status
          * @param {*} [options] Override http request option.
@@ -812,6 +892,18 @@ export class DefaultApi extends BaseAPI {
      */
     public getSessionMessagesApiSessionsSessionIdMessagesGet(sessionId: string, options?: RawAxiosRequestConfig) {
         return DefaultApiFp(this.configuration).getSessionMessagesApiSessionsSessionIdMessagesGet(sessionId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Get suggestions for a specific session.
+     * @summary Get Session Suggestions
+     * @param {string} sessionId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public getSessionSuggestionsApiSessionsSessionIdSuggestionsGet(sessionId: string, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getSessionSuggestionsApiSessionsSessionIdSuggestionsGet(sessionId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

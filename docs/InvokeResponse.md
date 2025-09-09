@@ -7,6 +7,7 @@ Response model for agent invocation.
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **session_id** | **string** | Session identifier | [default to undefined]
+**trace_id** | **string** |  | [optional] [default to undefined]
 **blocks** | [**Array&lt;Block&gt;**](Block.md) | List of blocks with type and content | [default to undefined]
 **user_context** | **{ [key: string]: any; }** |  | [optional] [default to undefined]
 
@@ -17,6 +18,7 @@ import { InvokeResponse } from '@trata/ts-volcani-sdk';
 
 const instance: InvokeResponse = {
     session_id,
+    trace_id,
     blocks,
     user_context,
 };

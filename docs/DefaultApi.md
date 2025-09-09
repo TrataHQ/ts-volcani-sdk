@@ -5,6 +5,7 @@ All URIs are relative to *http://localhost*
 |Method | HTTP request | Description|
 |------------- | ------------- | -------------|
 |[**getSessionMessagesApiSessionsSessionIdMessagesGet**](#getsessionmessagesapisessionssessionidmessagesget) | **GET** /api/sessions/{session_id}/messages | Get Session Messages|
+|[**getSessionSuggestionsApiSessionsSessionIdSuggestionsGet**](#getsessionsuggestionsapisessionssessionidsuggestionsget) | **GET** /api/sessions/{session_id}/suggestions | Get Session Suggestions|
 |[**getStatusStatusGet**](#getstatusstatusget) | **GET** /status | Get Status|
 |[**getUserSessionsApiSessionsGet**](#getusersessionsapisessionsget) | **GET** /api/sessions | Get User Sessions|
 |[**healthCheckHealthGet**](#healthcheckhealthget) | **GET** /health | Health Check|
@@ -43,6 +44,58 @@ const { status, data } = await apiInstance.getSessionMessagesApiSessionsSessionI
 ### Return type
 
 **ChatMessagesResponse**
+
+### Authorization
+
+[HTTPBearer](../README.md#HTTPBearer)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+|**200** | Successful Response |  -  |
+|**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **getSessionSuggestionsApiSessionsSessionIdSuggestionsGet**
+> SuggestionsResponse getSessionSuggestionsApiSessionsSessionIdSuggestionsGet()
+
+Get suggestions for a specific session.
+
+### Example
+
+```typescript
+import {
+    DefaultApi,
+    Configuration
+} from '@trata/ts-volcani-sdk';
+
+const configuration = new Configuration();
+const apiInstance = new DefaultApi(configuration);
+
+let sessionId: string; // (default to undefined)
+
+const { status, data } = await apiInstance.getSessionSuggestionsApiSessionsSessionIdSuggestionsGet(
+    sessionId
+);
+```
+
+### Parameters
+
+|Name | Type | Description  | Notes|
+|------------- | ------------- | ------------- | -------------|
+| **sessionId** | [**string**] |  | defaults to undefined|
+
+
+### Return type
+
+**SuggestionsResponse**
 
 ### Authorization
 
